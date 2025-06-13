@@ -1,0 +1,36 @@
+{
+    "name": "projectname",
+    "version": "1.0.0",
+    "description": "Template for Service (NodeJS)",
+    "main": "app/index.js",
+    "scripts": {
+        "live": "node --import=specifier-resolution-node/register --env-file=.env app",
+        "dev": "node --import=specifier-resolution-node/register --env-file=.env.dev app",
+        "init": "npm install && node --import=specifier-resolution-node/register system/init",
+        "install-service": "node --import=specifier-resolution-node/register system/service install",
+        "uninstall-service": "node --import=specifier-resolution-node/register system/service uninstall",
+        "create-certs": "node --import=specifier-resolution-node/register system/certs",
+        "clear-logs": "node --import=specifier-resolution-node/register system/logs"
+    },
+    "type": "module",
+    "dependencies": {
+        "http-proxy": "^1.18.1",
+        "imagic-utils": "^1.0.1",
+        "imagic-web-server": "^1.0.7"
+    },
+    "devDependencies": {
+        "eslint": "^8.57.1",
+        "eslint-config-airbnb": "^19.0.4",
+        "eslint-config-prettier": "^10.1.5",
+        "eslint-plugin-import": "^2.31.0",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-prettier": "^5.4.1",
+        "prettier": "^3.5.3",
+        "specifier-resolution-node": "^1.1.4"
+    },
+    "author": "DoubleFun",
+    "license": "MIT",
+    "engines": {
+        "node": ">=20"
+    }
+}
