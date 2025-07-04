@@ -57,7 +57,7 @@ export default async () => {
         const target = findTarget(clientReq)
 
         if (!target) {
-            console.error(`No target found for host: ${clientReq.headers.host}`)
+            global.logger.error(`No target found for host: ${clientReq.headers.host}`)
             clientRes.writeHead(404, { 'Content-Type': 'text/plain' })
             clientRes.end('Domain not configured')
             return
@@ -80,7 +80,7 @@ export default async () => {
         })
 
         proxyReq.on('error', (err) => {
-            console.error('Proxy error:', err)
+            global.logger.error('Proxy error:', err)
             if (!clientRes.headersSent) {
                 clientRes.writeHead(502, { 'Content-Type': 'text/plain' })
                 clientRes.end('Bad Gateway')
@@ -101,7 +101,7 @@ export default async () => {
         const target = findTarget(req)
 
         if (!target) {
-            console.error(`No target found for WebSocket upgrade: ${req.headers.host}`)
+            global.logger.error(`No target found for WebSocket upgrade: ${req.headers.host}`)
             socket.end()
             return
         }
@@ -129,14 +129,14 @@ export default async () => {
         })
 
         proxyReq.on('error', (err) => {
-            console.error('WebSocket proxy error:', err)
+            global.logger.error('WebSocket proxy error:', err)
             socket.end()
         })
 
         proxyReq.end()
     }
 
-    console.log('Configured domains:', DOMAINS)
+    global.logger.log('Configured domains:', DOMAINS)
 
     // HTTP Server (port 80)
     const httpServer = http.createServer((req, res) => {
@@ -148,11 +148,11 @@ export default async () => {
     })
 
     httpServer.on('error', (err) => {
-        console.error('HTTP server error:', err)
+        global.logger.error('HTTP server error:', err)
     })
 
     httpServer.listen(80, () => {
-        console.log('HTTP proxy server listening on port 80')
+        global.logger.log('HTTP proxy server listening on port 80')
     })
 
     // HTTPS Server (port 443)
@@ -165,10 +165,10 @@ export default async () => {
     })
 
     httpsServer.on('error', (err) => {
-        console.error('HTTPS server error:', err)
+        global.logger.error('HTTPS server error:', err)
     })
 
     httpsServer.listen(443, () => {
-        console.log('HTTPS proxy server listening on port 443')
+        global.logger.log('HTTPS proxy server listening on port 443')
     })
 }
