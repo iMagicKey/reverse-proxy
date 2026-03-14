@@ -57,7 +57,7 @@ export default async () => {
         const target = findTarget(clientReq)
 
         if (!target) {
-            global.logger.error(`No target found for host: ${clientReq.headers.host}`)
+            global.logger.error(`No target found for host: ${isHttps ? 'https' : 'http'}://${clientReq.headers.host}:${isHttps ? 443 : 80}`)
             clientRes.writeHead(404, { 'Content-Type': 'text/plain' })
             clientRes.end('Domain not configured')
             return
@@ -101,7 +101,7 @@ export default async () => {
         const target = findTarget(req)
 
         if (!target) {
-            global.logger.error(`No target found for WebSocket upgrade: ${req.headers.host}`)
+            global.logger.error(`No target found for WebSocket upgrade: ${isHttps ? 'wss' : 'ws'}://${req.headers.host}:${isHttps ? 443 : 80}`)
             socket.end()
             return
         }
