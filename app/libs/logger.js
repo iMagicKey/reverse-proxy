@@ -38,7 +38,12 @@ export default class Logger {
     static writeToFile = (logEntry, level) => {
         if (this.config.output.includes('file')) {
             const LOG_FILE_PATH = `./app/logs/${level}.log`
-            fs.appendFileSync(LOG_FILE_PATH, logEntry)
+            // A logging failure must not take the proxy down, it would also throw again in the uncaughtException handler
+            try {
+                fs.appendFileSync(LOG_FILE_PATH, logEntry)
+            } catch (err) {
+                console.error(`Can't write ${LOG_FILE_PATH}: ${err.message}`)
+            }
         }
     }
 

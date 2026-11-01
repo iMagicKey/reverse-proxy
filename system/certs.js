@@ -1,11 +1,18 @@
 import { existsSync, mkdirSync } from 'fs'
 import { resolve } from 'path'
+import { exit } from 'process'
 import { exec, execSync } from 'child_process'
 
 const ROOT_PATH = resolve()
-const CERTS_DIR_PATH = `${ROOT_PATH}/app/config/${process.argv[2]}/certs`
+const environment = process.argv[2] === 'dev' ? 'dev' : 'live'
+const CERTS_DIR_PATH = `${ROOT_PATH}/app/config/${environment}/certs`
 
-if (!existsSync(CERTS_DIR_PATH)) mkdirSync(CERTS_DIR_PATH)
+if (existsSync(`${CERTS_DIR_PATH}/key.pem`) || existsSync(`${CERTS_DIR_PATH}/cert.pem`)) {
+    console.log(`Certs already exist in ${CERTS_DIR_PATH}. Remove them first to generate new ones.`)
+    exit(0)
+}
+
+mkdirSync(CERTS_DIR_PATH, { recursive: true })
 
 exec(
     `ip -4 addr | grep -oP '(?<=inet\\s)\\d+(\\.\\d+){3}' | grep -vE '^(127|10|172\\.(1[6-9]|2[0-9]|3[0-1])|192\\.168)\\.' | head -1`,

@@ -1,12 +1,12 @@
-import { mkdirSync, writeFileSync, existsSync } from 'fs'
+import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'fs'
 import { resolve } from 'path'
 
 const ROOT_PATH = resolve()
 
-const FOLDER_NAMES = ['data', 'logs', 'resources', 'storage', 'config/dev']
+const FOLDER_NAMES = ['logs', 'config/dev']
 FOLDER_NAMES.forEach((folderName) => {
     const folderPath = `${ROOT_PATH}/app/${folderName}/`
-    if (!existsSync(folderPath)) mkdirSync(folderPath)
+    if (!existsSync(folderPath)) mkdirSync(folderPath, { recursive: true })
 })
 
 const LOG_LEVELS = ['log', 'debug', 'error', 'warn', 'info', 'crit', 'service-output', 'service-error']
@@ -15,15 +15,9 @@ LOG_LEVELS.forEach((logLevel) => {
     if (!existsSync(filePath)) writeFileSync(filePath, '')
 })
 
-const ENV_FILES = ['.env', '.env.dev']
-ENV_FILES.forEach((fileName, index) => {
+const ENV_EXAMPLE = readFileSync(`${ROOT_PATH}/.env.example`, 'utf8')
+const ENV_FILES = { '.env': 'live', '.env.dev': 'dev' }
+Object.entries(ENV_FILES).forEach(([fileName, appEnv]) => {
     const filePath = `${ROOT_PATH}/${fileName}`
-    if (!existsSync(filePath)) {
-        if (index === 0) {
-            writeFileSync(filePath, 'APP_ENV=live\nNODE_ENV=production\n\nSHEDULER_INTERVAL=15000\nWEB_PORT=3100\nWEB_HTTPS=false')
-        }
-        if (index === 1) {
-            writeFileSync(filePath, 'APP_ENV=dev\nNODE_ENV=development\n\nSHEDULER_INTERVAL=15000\nWEB_PORT=3100\nWEB_HTTPS=false')
-        }
-    }
+    if (!existsSync(filePath)) writeFileSync(filePath, ENV_EXAMPLE.replace('APP_ENV=live', `APP_ENV=${appEnv}`))
 })

@@ -1,6 +1,6 @@
-import run from './code'
-import Logger from './libs/logger'
-import getConfig from './libs/get-config'
+import run from './code/index.js'
+import Logger from './libs/logger.js'
+import getConfig from './libs/get-config.js'
 
 global.config = getConfig()
 
@@ -14,4 +14,7 @@ errorEvents.forEach((eventName) => {
     })
 })
 
-run()
+run().catch((err) => {
+    global.logger.crit('Startup failed', err)
+    process.exit(1)
+})

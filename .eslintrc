@@ -1,5 +1,5 @@
 {
-    "extends": ["airbnb", "eslint-config-airbnb-base", "prettier"],
+    "extends": ["airbnb-base", "prettier"],
     "rules": {
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "semi": "off",
@@ -17,5 +17,5 @@
         "es6": true,
         "node": true
     },
-    "plugins": ["import", "prettier", "node"]
+    "plugins": ["import", "prettier"]
 }

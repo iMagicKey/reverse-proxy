@@ -29,7 +29,7 @@ if (action === 'install') {
         SERVICE_FILE_PATH,
         `[Unit]
         Description=${SERVICE_NAME}
-        After=multi-user.target
+        After=network.target
 
         [Service]
         WorkingDirectory=${ROOT_PATH}

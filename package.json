@@ -1,36 +1,40 @@
 {
-    "name": "projectname",
+    "name": "reverse-proxy",
     "version": "1.0.0",
-    "description": "Template for Service (NodeJS)",
+    "description": "Minimal multi-domain HTTP, HTTPS and WebSocket reverse proxy for Node.js with no runtime dependencies",
+    "private": true,
     "main": "app/index.js",
     "scripts": {
-        "live": "node --import=specifier-resolution-node/register --env-file=.env app",
-        "dev": "node --import=specifier-resolution-node/register --env-file=.env.dev app",
-        "init": "npm install && node --import=specifier-resolution-node/register system/init",
-        "install-service": "node --import=specifier-resolution-node/register system/service install",
-        "uninstall-service": "node --import=specifier-resolution-node/register system/service uninstall",
-        "create-certs": "node --import=specifier-resolution-node/register system/certs",
-        "clear-logs": "node --import=specifier-resolution-node/register system/logs"
+        "live": "node --env-file=.env app/index.js",
+        "dev": "node --env-file=.env.dev app/index.js",
+        "test": "node --test",
+        "lint": "eslint . && prettier --check .",
+        "init": "npm install && node system/init.js",
+        "install-service": "node system/service.js install",
+        "uninstall-service": "node system/service.js uninstall",
+        "create-certs": "node system/certs.js",
+        "clear-logs": "node system/logs.js"
     },
     "type": "module",
-    "dependencies": {
-        "http-proxy": "^1.18.1",
-        "imagic-utils": "^1.0.1",
-        "imagic-web-server": "^1.0.7"
-    },
     "devDependencies": {
         "eslint": "^8.57.1",
-        "eslint-config-airbnb": "^19.0.4",
+        "eslint-config-airbnb-base": "^15.0.0",
         "eslint-config-prettier": "^10.1.5",
         "eslint-plugin-import": "^2.31.0",
-        "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-prettier": "^5.4.1",
-        "prettier": "^3.5.3",
-        "specifier-resolution-node": "^1.1.4"
+        "prettier": "^3.5.3"
     },
-    "author": "DoubleFun",
+    "author": "imagickey",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/iMagicKey/reverse-proxy.git"
+    },
+    "bugs": {
+        "url": "https://github.com/iMagicKey/reverse-proxy/issues"
+    },
+    "homepage": "https://github.com/iMagicKey/reverse-proxy#readme",
     "engines": {
-        "node": ">=20"
+        "node": ">=20.6.0"
     }
 }
